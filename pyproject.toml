@@ -1,0 +1,18 @@
+[project]
+name = "to-do-list"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "Mihail Fomin PC",email = "mihanaz098@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "django (>=6.0.1,<7.0.0)",
+    "pymysql (>=1.1.2,<2.0.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"

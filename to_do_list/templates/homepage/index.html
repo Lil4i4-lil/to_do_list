@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8">
+    <title>Главная страница</title>
+  </head>
+  <body>
+    <header>
+      <h1>Добро пожаловать в ваш <b>To-do List</b></h1>
+    </header>
+    <main>
+      <h1>
+        <a href="{% url 'tasks:task_list' %}">Посмотреть список дел</a>
+      </h1>
+    </main>
+  </body>
+</html>
