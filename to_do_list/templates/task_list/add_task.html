@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Создание новой заметки</title>
+  </head>
+  <body>
+    <header>
+      <h1>Создание новой заметки</h1>
+    </header>
+    <main>
+      <form action="{% url 'tasks:task_list' %}">
+        <table>
+          {{ form.as_table }}
+        </table>
+        <input type="submit" value="Сохранить">
+        <input type="submit" value="Отмена">
+      </form>
+    </main>
+  </body>
+</html>
