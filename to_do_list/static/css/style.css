@@ -1,0 +1,36 @@
+header {
+     border: 10px solid #e0e0e0;
+}
+
+.head_button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border: 0;
+    border-radius: 00;
+    background: white;
+    font-size: 32px;
+    font-family: Optima;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+.head_button:hover {
+    color: grey;
+}
+
+.head_button:focus {
+    color: grey;
+}
+
+.nav-container {
+  display: flex;
+  justify-content: space-between; /* левая и правая группы по краям */
+  align-items: center;
+  padding: 10px 20px;
+}
+
+.nav-left, .nav-right {
+  display: flex;
+  gap: 10px; /* расстояние между кнопками в группе */
+}

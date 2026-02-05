@@ -1,0 +1,37 @@
+{% load static %}
+<header class="head">
+  <nav>
+    <div class="nav-container">
+      <div class="nav-left">
+        <form method="get" action="{% url 'homepage:index' %}">
+          <button type="submit" class="head_button">Главная</button>
+        </form>
+        <form method="get" action="{% url 'tasks:task_list' %}">
+          <button type="submit" class="head_button">Мои задачи</button>
+        </form>
+      </div>
+
+      <div class="nav-right">
+        {% if user.is_authenticated %}
+          <form method="get" action="{% url 'user_profile:profile' %}">
+            <button type="submit" title="Профиль" class="head_button">
+              <img src="{% static 'img/profile.png' %}" width="50" height="50">
+            </button>
+          </form>
+          <form method="post" action="{% url 'login' %}">
+            {% csrf_token %}
+            <button type="submit" title="Выйти из системы" class="head_button">
+              <img src="{% static 'img/logout.webp' %}" width="50" height="50">
+            </button>
+          </form>
+        {% else %}
+          <form method="get" action="{% url 'login' %}">
+            <button type="submit" title="Войти" class="head_button">
+              <img src="{% static 'img/profile.png' %}" width="50" height="50">
+            </button>
+          </form>
+        {% endif %}
+      </div>
+    </div>
+  </nav>
+</header>

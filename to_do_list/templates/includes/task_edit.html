@@ -1,0 +1,9 @@
+<main>
+  <form action="{% url 'tasks:task_list' %}" method="get">
+    <table>
+      {{ form.as_table }}
+    </table>
+    <input type="submit" value="Сохранить">
+    <input type="submit" value="Отмена">
+  </form>
+</main>

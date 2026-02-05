@@ -1,17 +1,13 @@
-<!DOCTYPE html>
-<html lang="ru">
-  <head>
-    <meta charset="UTF-8">
-    <title>Главная страница</title>
-  </head>
-  <body>
-    <header>
-      <h1>Добро пожаловать в ваш <b>To-do List</b></h1>
-    </header>
-    <main>
-      <h1>
-        <a href="{% url 'tasks:task_list' %}">Посмотреть список дел</a>
-      </h1>
-    </main>
-  </body>
-</html>
+{% extends "base.html" %}
+{% block title %}
+  Главная
+{% endblock %}
+{% block content %}
+  <main>
+    <h1>
+      Здравствуйте, {{ user.username }}!<br>
+      Добро пожаловать в ваш To-do List<br>
+      <a href="{% url 'tasks:task_list' %}">Посмотреть список дел</a>
+    </h1>
+  </main>
+{% endblock %}
