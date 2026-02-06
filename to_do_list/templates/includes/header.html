@@ -1,36 +1,32 @@
 {% load static %}
-<header class="head">
-  <nav>
-    <div class="nav-container">
-      <div class="nav-left">
-        <form method="get" action="{% url 'homepage:index' %}">
-          <button type="submit" class="head_button">Главная</button>
-        </form>
-        <form method="get" action="{% url 'tasks:task_list' %}">
-          <button type="submit" class="head_button">Мои задачи</button>
-        </form>
-      </div>
+<header style="border-bottom: 2px solid #000000;">
+  <nav style="background-color: #dfe0e0;">
+    <div class="container-fluid">
+      <div class="row align-items-center">
 
-      <div class="nav-right">
+        <div class="col-1">
+          <a href="{% url 'homepage:index' %}" class="btn btn-outline-dark btn-lg">Главная</a>
+        </div>
+
+        <div class="col-10">
+          <a href="{% url 'tasks:task_list' %}" class="btn btn-outline-dark btn-lg">Мои задачи</a>
+        </div>
+
         {% if user.is_authenticated %}
-          <form method="get" action="{% url 'user_profile:profile' %}">
-            <button type="submit" title="Профиль" class="head_button">
-              <img src="{% static 'img/profile.png' %}" width="50" height="50">
-            </button>
-          </form>
-          <form method="post" action="{% url 'login' %}">
-            {% csrf_token %}
-            <button type="submit" title="Выйти из системы" class="head_button">
-              <img src="{% static 'img/logout.webp' %}" width="50" height="50">
-            </button>
-          </form>
+          <div class="col-1">
+            <a href="{% url 'user_profile:profile' %}" class="btn btn_light">
+              <img src="{% static 'img/user.png' %}" width="50" height="50" title="Профиль">
+            </a>
+          </div>
+
         {% else %}
-          <form method="get" action="{% url 'login' %}">
-            <button type="submit" title="Войти" class="head_button">
-              <img src="{% static 'img/profile.png' %}" width="50" height="50">
-            </button>
-          </form>
-        {% endif %}
+          <div class="col-1">
+            <a href="{% url 'login' %}" class="btn btn_light">
+              <img src="{% static 'img/user.png' %}" width="50" height="50" title="Войти в профиль">
+            </a>
+          </div>
+
+          {% endif %}
       </div>
     </div>
   </nav>

@@ -1,21 +1,28 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}
   Список задач
 {% endblock %}
 
 {% block content %}
-  <div>
-    <h1>Список задач пользователя</h1>
+  <div class="container-fluid">
+    <div class="row">
+      <h1><strong>Список задач пользователя</strong></h1>
+    </div>
+    <main>
+      <div class="list-group list-group-flush fs-4">
+        {% for task in tasks %}
+          <a href="{% url 'tasks:task' task.id%}" class="list-group-item list-group-item-action">
+            <input class="form-check-input me-2" type="checkbox" value="" aria-label="...">
+            {{ task }}
+          </a>
+        {% endfor %}
+          <a href="{% url 'tasks:add_task' %}" class="list-group-item list-group-item-action">
+            <img src="{% static 'img/plus.png' %}" width="25" height="25">
+            Добавить новую заметку
+          </a>
+      </div>
+    </main>
   </div>
-  <main>
-    <ul>
-      {% for task in tasks %}
-        <li><a href="{% url 'tasks:task' %}">{{ task }}</a></li>
-      {% endfor %}
-      <li>
-        <a href="{% url 'tasks:add_task' %}">Добавить новую заметку</a>
-      </li>
-    </ul>
-  </main>
 {% endblock %}
