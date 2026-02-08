@@ -1,9 +1,22 @@
 {% extends "base.html" %}
+{% load django_bootstrap5 %}
+
 {% block title %}
   Профиль пользователя
 {% endblock %}
+
 {% block content %}
-  <div>
-     <h1>Профиль пользователя</h1>
-  </div>
+<form>
+    <div class="card">
+        <div class="card-header">
+            <h1 class="text-center">Профиль {{ user }}</h1>
+        </div>
+        <div class="card-body">
+            {% bootstrap_form form %}
+        </div>
+        <div class="card-footer">
+
+        </div>
+    </div>
+</form>
 {% endblock %}

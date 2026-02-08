@@ -12,8 +12,8 @@
     </div>
     <main>
       <div class="list-group list-group-flush fs-4">
-        {% for task in tasks %}
-          <a href="{% url 'tasks:task' task.id%}" class="list-group-item list-group-item-action">
+        {% for task in page_obj %}
+          <a href="{% url 'tasks:task' task.id %}" class="list-group-item list-group-item-action">
             <input class="form-check-input me-2" type="checkbox" value="" aria-label="...">
             {{ task }}
           </a>
@@ -25,4 +25,6 @@
       </div>
     </main>
   </div>
+
+  {% include "includes/paginator.html" %}
 {% endblock %}
