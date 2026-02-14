@@ -1,0 +1,14 @@
+import base64
+
+# Скопируйте содержимое после пустой строки (закодированная часть)
+encoded_text = """CiAg0KPQstCw0LbQsNC10LzRi9C5IFRlc3RfVXNlciEKICDQp9GC0L7QsdGLINCy0YvQv9C+0LvQ
+vdC40YLRjCDRgdCx0YDQvtGBINC/0LDRgNC+0LvRjywg0L/RgNC+0LnQtNC40YLQtSDQv9C+INGN
+0YLQvtC80YMg0LjQvdGC0LXRgNC90LXRgi3QsNC00YDQtdGB0YM6CiAgaHR0cDovLzEyNy4wLjAu
+MTo4MDAwL2F1dGgvcmVzZXQvTWcvZDQwZXBwLTQzOTI2NDJmNjQ1YmE0NjdkMTIxYWM2ODgwODAy
+OThlLwogINCU0L4g0YHQstC40LTQsNC90LjRjyEKICDQoSDRg9Cy0LDQttC10L3QuNC10LwsINCw
+0LTQvNC40L3QuNGB0YLRgNCw0YbQuNGPINGB0LDQudGC0LAgItCU0L7RgdC60LAg0L7QsdGK0Y/Q
+stC70LXQvdC40LkiLgo="""
+
+# Декодируем
+decoded_text = base64.b64decode(encoded_text).decode('utf-8')
+print(decoded_text)

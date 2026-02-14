@@ -17,11 +17,19 @@
             <input class="form-check-input me-2" type="checkbox" value="" aria-label="...">
             {{ task }}
           </a>
+          <p style="color: grey;">
+            {% for tag in task.tags.all %}
+              {{ tag }}
+              {% if not forloop.last %}
+                <span> | </span>
+              {% endif %}
+            {% endfor %}
+          </p>
         {% endfor %}
           <a href="{% url 'tasks:add_task' %}" class="list-group-item list-group-item-action">
             <img src="{% static 'img/plus.png' %}" width="25" height="25">
             Добавить новую заметку
-          </a>
+          </a><br>
       </div>
     </main>
   </div>

@@ -1,0 +1,13 @@
+<!-- templates/core/404.html -->
+{% extends "base.html" %}
+{% block title %}Custom 404{% endblock %}
+
+{% block content %}
+  <div class="container d-flex justify-content-center align-items-center" style="min-height: 75vh;">
+    <div class="col-4 m-3">
+      <h1>Custom 404</h1>
+      <p style="font-size: 20px;">Страницы с адресом {{ request.path }} не существует</p>
+      <a href="{% url 'homepage:index' %}" style="color: black; font-size: 20px;">Перейти на главную</a>
+    </div>
+  </div>
+{% endblock %}

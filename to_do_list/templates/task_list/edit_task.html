@@ -1,6 +1,9 @@
 {% extends "base_task_info.html" %}
 {% load static %}
 
+{% block title %}Ваша заметка{% endblock %}
+{% block header_title %}Ваша заметка{% endblock %}
+
 {% block form_info %}
   action="{% url 'tasks:task' task.id %}" method="post"
 {% endblock %}

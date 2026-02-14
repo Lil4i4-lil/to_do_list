@@ -16,12 +16,22 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from . import settings
 
+from user_profile.views import ProfileCreateView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('auth/', include('django.contrib.auth.urls')),
+    path('auth/registration/', ProfileCreateView.as_view(), name='registration'),
     path('', include('homepage.urls')),
     path('tasks/', include('task_list.urls')),
     path('profile/', include('user_profile.urls')),
 ]
+
+handler404 = 'core.views.page_not_found'
+
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns += (path('__debug__/', include(debug_toolbar.urls)),)
+

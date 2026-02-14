@@ -1,12 +1,8 @@
 {% extends "base.html" %}
 
-{% block content %}
-  {% if form.errors %}
-    <p style="color: red;">
-      Неправильное имя пользователя или пароль. Попробуйте еще раз.
-    </p>
-  {% endif %}
+{% load django_bootstrap5 %}
 
+{% block content %}
   {% if next %}
     {% if user.is_authenticated %}
       <p>
@@ -21,34 +17,24 @@
       </p>
     {% endif %}
   {% endif %}
+  <div class="container d-flex justify-content-center align-items-center" style="min-height: 75vh;">
+    <div class="card col-5 m-3">
+      <div class="card-header">
+        Войти в систему
+      </div>
 
-  <div>
-    <div>
-      Войти в систему
-    </div>
-    <div>
-      <form method="post" action="{% url 'login' %}">
-        {% csrf_token %}
-        <table>
-          <tr>
-            <td><input type="hidden" name="next" value="{{ next }}"></td>
-          </tr>
-          <tr>
-            <td>{{ form.username.label_tag }}</td>
-            <td>{{ form.username }}</td>
-          </tr>
-          <tr>
-            <td>{{ form.password.label_tag }}</td>
-            <td>{{ form.password }}</td>
-          </tr>
-          <tr>
-            <td><input type="submit" value="Войти"></td>
-          </tr>
-        </table>
-      </form>
+      <div class="card-body">
+        <form method="post" action="{% url 'login' %}">
+          {% csrf_token %}
+          {% bootstrap_form form %}
+          <input type="hidden" name="next" value="{{ next }}">
+          <input type="submit" value="Войти" class="btn btn-dark">
+        </form>
 
-      <div>
-        <a href="{% url 'password_reset' %}">Забыли пароль?</a>
+        <div class="d-flex justify-content-between mt-3">
+          <a href="{% url 'registration' %}" style="color: black;">Зарегистрироваться</a>
+          <a href="{% url 'password_reset' %}" style="color: black;">Забыли пароль?</a>
+        </div>
       </div>
     </div>
   </div>

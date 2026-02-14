@@ -8,6 +8,15 @@ class Task(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, null=False, blank=False)
     completed = models.BooleanField(default=False, null=False, blank=False)
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=False, blank=False, default=1)
+    tags = models.ManyToManyField('Tag', verbose_name="Теги", blank=True,
+                                  help_text='Удерживайте Ctrl для выбора нескольких вариантов')
 
     def __str__(self):
         return self.title
+
+
+class Tag(models.Model):
+    tag = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.tag

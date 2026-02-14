@@ -4,10 +4,24 @@
 {% endblock %}
 {% block content %}
   <div class="d-flex flex-column justify-content-center align-items-center min-vh-100">
-    <h1 class="text-center">
-      Здравствуйте, {{ user.username }}!<br>
-      Добро пожаловать в ваш To-do List<br>
-      <a href="{% url 'tasks:task_list' %}" class="btn btn-outline-dark btn-lg">Посмотреть список дел</a>
-    </h1>
+    {% if user.is_authenticated %}
+      <h1 class="text-center">
+        Здравствуйте, {{ user.username }}!<br>
+        Добро пожаловать в ваш To-do List<br>
+        {% if task_count  == 1 %}
+          У вас {{ task_count }} невыполненная задача<br>
+        {% elif task_count < 5 %}
+          У вас {{ task_count }} невыполненные задачи<br>
+        {% else %}
+          У вас {{ task_count }} невыполненныx задач<br>
+        {% endif %}
+        <a href="{% url 'tasks:task_list' %}" class="btn btn-outline-dark btn-lg">Посмотреть список дел</a>
+      </h1>
+    {% else %}
+      <h1 class="text-center">
+        Здравствуйте!<br>
+        Добро пожаловать в ваш To-do List<br>
+      </h1>
+    {% endif %}
   </div>
 {% endblock %}

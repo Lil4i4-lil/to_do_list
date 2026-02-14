@@ -2,16 +2,12 @@
 {% load django_bootstrap5 %}
 {% load static %}
 
-{% block title %}
-  {{ title }}
-{% endblock %}
-
 {% block content %}
   <form {% block form_info %} {% endblock %}>
     {% csrf_token %}
     <div class="card">
       <div class="card-header">
-        <h1>{{ title }}</h1>
+        <h1>{% block header_title %}{% endblock %}</h1>
       </div>
       <div class="card-body">
         {% bootstrap_form form %}

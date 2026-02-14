@@ -34,7 +34,10 @@ SECRET_KEY = 'django-insecure-dd^g@o+*j!@b#w@^_8+oh3o9j+!+f7dl&-*=$x+@d=bpr-@_8u
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+]
 
 
 # Application definition
@@ -47,9 +50,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_bootstrap5',
+    'debug_toolbar',
     'homepage.apps.HomepageConfig',
     'task_list.apps.TaskListConfig',
     'user_profile.apps.UserProfileConfig',
+    'core.apps.CoreConfig',
 ]
 
 MIDDLEWARE = [
@@ -60,6 +65,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'to_do_list.urls'
@@ -138,4 +144,14 @@ STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
 
+LOGIN_URL = '/auth/login/'
 LOGIN_REDIRECT_URL = "homepage:index"
+
+EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+EMAIL_FILE_PATH = BASE_DIR / 'sent_emails'
+
+CSRF_FAILURE_VIEW = 'core.views.csrf_failure'
+
+INTERNAL_IPS = [
+    '127.0.0.1',
+]

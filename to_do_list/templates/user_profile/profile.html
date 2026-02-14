@@ -1,22 +1,37 @@
 {% extends "base.html" %}
 {% load django_bootstrap5 %}
+{% load static %}
 
 {% block title %}
   Профиль пользователя
 {% endblock %}
 
 {% block content %}
-<form>
-    <div class="card">
-        <div class="card-header">
-            <h1 class="text-center">Профиль {{ user }}</h1>
-        </div>
-        <div class="card-body">
-            {% bootstrap_form form %}
-        </div>
-        <div class="card-footer">
-
-        </div>
-    </div>
-</form>
+  <form action="{% url 'user_profile:profile' %}" method="post">
+    {% csrf_token %}
+      <div class="card">
+          <div class="card-header">
+              <h1 class="text-center">Профиль {{ user }}</h1>
+          </div>
+          <div class="card-body">
+              {% bootstrap_form form %}
+          </div>
+          <div class="card-footer d-flex justify-content-between align-items-center">
+            <div>
+              <input type="submit" class="btn btn-outline-dark btn-lg" value="Сохранить изменения" name="save">
+              <input type="submit" class="btn btn-outline-dark btn-lg" value="Отмена" name="cancel">
+            </div>
+            <div>
+              <a href="{% url 'password_change' %}" class="btn btn-outline-dark btn-lg">Сменить пароль</a>
+            </div>
+          </div>
+      </div>
+  </form>
+  <form action="{% url 'logout' %}" method="post" class="position-absolute bottom-0 end-0 m-4">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-outline-dark btn-lg">
+      <img src="{% static 'img/exit.png' %}" width="25" height="25" title="Выйти из профиля">
+      Выход
+    </button>
+  </form>
 {% endblock %}
