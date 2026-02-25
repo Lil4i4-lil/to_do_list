@@ -1,7 +1,8 @@
 from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView, UpdateView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 
 from .models import Task
 from .forms import TaskForm
@@ -13,18 +14,16 @@ class TaskMixin:
     success_url = reverse_lazy("tasks:task_list")
 
 
-class TaskListView(ListView):
+class TaskListView(LoginRequiredMixin, ListView):
     model = Task
-    ordering = "created_at"
-    queryset = Task.objects.all().prefetch_related('tags').select_related('author')
     paginate_by = 10
 
     def get_queryset(self):
-        queryset = super().get_queryset()
+        queryset = Task.objects.all().prefetch_related('tags').select_related('author').order_by('created_at')
         return queryset.filter(author_id=self.request.user)
 
 
-class TaskCreateView(TaskMixin, CreateView):
+class TaskCreateView(TaskMixin, LoginRequiredMixin, CreateView):
     template_name = "task_list/add_task.html"
 
     def form_valid(self, form):
@@ -41,13 +40,12 @@ class TaskCreateView(TaskMixin, CreateView):
         return super().post(request, *args, **kwargs)
 
 
-class TaskUpdateView(TaskMixin, UpdateView):
+class TaskUpdateView(TaskMixin, LoginRequiredMixin, UpdateView):
     template_name = "task_list/edit_task.html"
 
-    def get_object(self, queryset=None):
-        """Получаем объект задачи по id из URL"""
-        id = self.kwargs.get('id')
-        return get_object_or_404(Task, pk=id)
+    def get_queryset(self):
+        queryset = Task.objects.all().prefetch_related('tags').select_related('author').order_by('created_at')
+        return queryset.filter(author_id=self.request.user)
 
     def post(self, request, *args, **kwargs):
         """Обработка POST-запроса с разными кнопками"""
@@ -55,8 +53,6 @@ class TaskUpdateView(TaskMixin, UpdateView):
 
         if 'cancel' in request.POST:
             return redirect('tasks:task_list')
-        elif 'complete' in request.POST:
-            pass
         elif 'save' in request.POST:
             form = self.get_form()
             if form.is_valid():
@@ -67,11 +63,29 @@ class TaskUpdateView(TaskMixin, UpdateView):
         return redirect('tasks:task_list')
 
 
-def confirm_delete(request, id):
-    instance = get_object_or_404(Task, pk=id)
+class TaskDeleteView(TaskMixin, LoginRequiredMixin, DeleteView):
+    template_name = "task_list/edit_task.html"
+
+    def get_queryset(self):
+        queryset = Task.objects.all().prefetch_related('tags').select_related('author').order_by('created_at')
+        return queryset.filter(author_id=self.request.user)
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+
+        if "confirm-delete" in request.POST:
+            self.object.delete()
+            return redirect(self.success_url)
+        else:
+            return redirect("tasks:task", pk=self.object.pk)
+
+
+
+def confirm_delete(request, pk):
+    instance = get_object_or_404(Task, pk=pk)
 
     if "confirm-delete" in request.POST:
         instance.delete()
         return redirect("tasks:task_list")
     else:
-        return redirect("tasks:task", id=id)
+        return redirect("tasks:task", pk=pk)

@@ -20,6 +20,7 @@ from . import settings
 
 from user_profile.views import ProfileCreateView
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('auth/', include('django.contrib.auth.urls')),

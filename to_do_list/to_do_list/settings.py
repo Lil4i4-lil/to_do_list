@@ -17,14 +17,6 @@ from django.conf.global_settings import LOGIN_REDIRECT_URL
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-try:
-    import pymysql
-    pymysql.version_info = (2, 2, 1, "final", 0)
-    pymysql.install_as_MySQLdb()
-except ImportError:
-    pass
-
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
@@ -95,12 +87,12 @@ WSGI_APPLICATION = 'to_do_list.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'to_do_list',
-        'USER': 'root',
+        'USER': 'postgres',
         'PASSWORD': 'Wasd__5843',
         'HOST': 'localhost',
-        'PORT': '3306',
+        'PORT': '5432',
     }
 }
 
@@ -155,3 +147,5 @@ CSRF_FAILURE_VIEW = 'core.views.csrf_failure'
 INTERNAL_IPS = [
     '127.0.0.1',
 ]
+
+AUTH_USER_MODEL = 'user_profile.UserProfile'

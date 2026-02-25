@@ -9,12 +9,19 @@
 {% endblock %}
 
 {% block form_footer %}
-    <input type="submit" name="cancel" class="btn btn-outline-dark btn-lg" value="К списку задач">
-    <input type="submit" name="save" class="btn btn-outline-dark btn-lg" value="Сохранить изменения">
-    <input type="submit" name="complete" class="btn btn-outline-dark btn-lg" value="Выполнить задачу">
-    <button type="button" name="delete" class="btn btn-outline-dark btn-lg" data-bs-toggle="modal" data-bs-target="#confirmModal">
-      <img src="{% static 'img/trash.png' %}" width="25" height="25" title="Удалить заметку">
-    </button>
+  <div class="d-flex justify-content-between mt-3">
+    <div>
+      <input type="submit" name="cancel" class="btn btn-outline-dark btn-lg" value="К списку задач">
+      <input type="submit" name="save" class="btn btn-outline-dark btn-lg" value="Сохранить изменения">
+      <input type="submit" name="complete" class="btn btn-outline-dark btn-lg" value="Выполнить задачу">
+    </div>
+    <div>
+      <button type="button" name="delete" class="btn btn-outline-dark btn-lg"
+              data-bs-toggle="modal" data-bs-target="#confirmModal">
+        <img src="{% static 'img/trash.png' %}" width="25" height="25" title="Удалить заметку">
+      </button>
+    </div>
+  </div>
 {% endblock %}
 
 {% block extra_content %}
@@ -33,7 +40,9 @@
                     {% csrf_token %}
                     <button type="submit" name="confirm-delete" class="btn btn-dark btn-lg">Удалить</button>
                 </form>
-                <button type="button" name="cancel" class="btn btn-outline-dark btn-lg" data-bs-dismiss="modal">Отмена</button>
+                <button type="button" name="cancel" class="btn btn-outline-dark btn-lg" data-bs-dismiss="modal">
+                  Отмена
+                </button>
             </div>
         </div>
     </div>

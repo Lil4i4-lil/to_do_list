@@ -6,10 +6,9 @@ class TaskForm(forms.ModelForm):
 
     class Meta:
         model = Task  # Укажите модель
-        fields = ['title', 'content', 'author', 'tags']
+        fields = ['title', 'content', 'tags']
         widgets = {
             'content': forms.Textarea(),
-            'author': forms.HiddenInput(),
         }
 
     def clean_title(self):
