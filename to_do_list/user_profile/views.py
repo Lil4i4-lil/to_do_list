@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model, authenticate, login
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import UpdateView, CreateView
@@ -7,26 +8,27 @@ from django.views.generic import UpdateView, CreateView
 from .forms import ProfileForm, CustomUserCreationForm
 
 
-class ProfileUpdateView(UpdateView):
+class ProfileUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     model = get_user_model()
     form_class = ProfileForm
-    template_name = "user_profile/profile.html"
-    success_url = reverse_lazy("user_profile:profile")
+    template_name = 'user_profile/profile.html'
+    success_url = reverse_lazy('user_profile:profile')
+    success_message = 'Изменения сохранены'
 
     def get_object(self, queryset=None):
         return self.request.user
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
-        if "save" in request.POST:
+        if 'save' in request.POST:
             form = self.get_form()
             if form.is_valid():
                 return self.form_valid(form)
             else:
                 return self.form_invalid(form)
-        elif "cancel" in request.POST:
-            return redirect("homepage:index")
-        return redirect("homepage:index")
+        elif 'cancel' in request.POST:
+            return redirect('homepage:index')
+        return redirect('homepage:index')
 
 
 class ProfileCreateView(CreateView):
