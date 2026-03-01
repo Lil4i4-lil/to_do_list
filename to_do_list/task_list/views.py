@@ -17,10 +17,25 @@ class TaskMixin:
 class TaskListView(LoginRequiredMixin, ListView):
     model = Task
     paginate_by = 10
+    tag = None
 
     def get_queryset(self):
-        queryset = Task.objects.all().prefetch_related('tags').select_related('author').order_by('created_at')
+        queryset = (Task.objects.all()
+                    .prefetch_related('tags')
+                    .select_related('author')
+                    .order_by('created_at'))
+
+        self.tag = self.request.GET.get('tag', '')
+
+        if self.tag:
+            queryset = queryset.filter(tags__tag__icontains=self.tag)
+
         return queryset.filter(author_id=self.request.user)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['tag'] = getattr(self, 'tag', '')
+        return context
 
 
 class TaskCreateView(TaskMixin, LoginRequiredMixin, CreateView):

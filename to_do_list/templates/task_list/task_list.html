@@ -10,6 +10,21 @@
     <div class="row">
       <h1><strong>Список задач пользователя</strong></h1>
     </div>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12 col-md-6 col-lg-4">
+          <form method="get" action="{% url 'tasks:task_list' %}" class="d-flex gap-2">
+            <input type="text"
+               class="form-control"
+               name="tag"
+               placeholder="Введите тег для фильтрации"
+               value="{{ tag }}"
+               aria-label="Поиск по тегу">
+            <button type="submit" class="btn btn-dark">Поиск</button>
+          </form>
+        </div>
+      </div>
+    </div><br>
     <main>
       <div class="list-group list-group-flush fs-4">
         {% for task in page_obj %}
