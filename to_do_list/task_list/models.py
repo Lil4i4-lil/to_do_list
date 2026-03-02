@@ -7,7 +7,8 @@ class Task(models.Model):
     content = models.TextField(null=True, blank=True, verbose_name="Пояснение к задаче")
     created_at = models.DateTimeField(auto_now_add=True, null=False, blank=False)
     completed = models.BooleanField(default=False, null=False, blank=False)
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=False, blank=False, default=3)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=False, blank=False, default=3,
+                               related_name='tasks')
     tags = models.ManyToManyField('Tag', verbose_name="Теги", blank=True,
                                   help_text='Удерживайте Ctrl для выбора нескольких вариантов')
 

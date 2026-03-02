@@ -40,7 +40,7 @@
   </form>
   <form action="{% url 'logout' %}" method="post" class="position-absolute bottom-0 end-0 m-4">
     {% csrf_token %}
-    <button type="submit" class="btn btn-outline-dark btn-lg">
+    <button type="submit" class="btn btn-outline-dark btn-lg" value="Выход" name="exit">
       <img src="{% static 'img/exit.png' %}" width="25" height="25" title="Выйти из профиля">
       Выход
     </button>

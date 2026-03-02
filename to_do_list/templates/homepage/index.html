@@ -15,7 +15,7 @@
         {% else %}
           У вас {{ task_count }} невыполненныx задач<br>
         {% endif %}
-        <a href="{% url 'tasks:task_list' %}" class="btn btn-outline-dark btn-lg">Посмотреть список дел</a>
+        <a href="{% url 'tasks:task_list' %}" class="btn btn-outline-dark btn-lg" name="redirection">Посмотреть список дел</a>
       </h1>
     {% else %}
       <h1 class="text-center">
