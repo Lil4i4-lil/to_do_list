@@ -18,12 +18,13 @@ class TaskListView(LoginRequiredMixin, ListView):
     model = Task
     paginate_by = 10
     tag = None
+    queryset = (Task.objects.all()
+                .prefetch_related('tags')
+                .select_related('author')
+                .order_by('created_at'))
 
     def get_queryset(self):
-        queryset = (Task.objects.all()
-                    .prefetch_related('tags')
-                    .select_related('author')
-                    .order_by('created_at'))
+        queryset = super().get_queryset().filter(completed=False)
 
         self.tag = self.request.GET.get('tag', '')
 
@@ -34,6 +35,7 @@ class TaskListView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['completed_tasks'] = self.queryset.filter(completed=True)
         context['tag'] = getattr(self, 'tag', '')
         return context
 
@@ -59,7 +61,7 @@ class TaskUpdateView(TaskMixin, LoginRequiredMixin, UpdateView):
     template_name = "task_list/edit_task.html"
 
     def get_queryset(self):
-        queryset = Task.objects.all().prefetch_related('tags').select_related('author').order_by('created_at')
+        queryset = Task.objects.all().prefetch_related('tags').select_related('author')
         return queryset.filter(author_id=self.request.user)
 
     def post(self, request, *args, **kwargs):
@@ -67,6 +69,10 @@ class TaskUpdateView(TaskMixin, LoginRequiredMixin, UpdateView):
         self.object = self.get_object()
 
         if 'cancel' in request.POST:
+            return redirect('tasks:task_list')
+        elif 'complete' in request.POST:
+            self.object.completed = True
+            self.object.save()
             return redirect('tasks:task_list')
         elif 'save' in request.POST:
             form = self.get_form()

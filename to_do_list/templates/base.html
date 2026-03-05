@@ -11,6 +11,29 @@
     {% load django_bootstrap5 %}
     {% bootstrap_css %}
     {% bootstrap_javascript %}
+
+    <style>
+        .accordion {
+            --bs-accordion-bg: #f5f5f5;           /* Основной фон */
+            --bs-accordion-color: #333;            /* Цвет текста */
+            --bs-accordion-border-color: #ccc;     /* Цвет границы */
+            --bs-accordion-btn-bg: #e8e8e8;        /* Фон кнопки */
+            --bs-accordion-active-bg: #d0d0d0;     /* Фон активной кнопки */
+            --bs-accordion-active-color: #000;     /* Цвет текста активной кнопки */
+            --bs-accordion-btn-focus-border-color: #aaa;
+            --bs-accordion-btn-focus-box-shadow: 0 0 0 0.25rem rgba(128, 128, 128, 0.25);
+            --bs-accordion-body-padding-x: 1.5rem;
+            --bs-accordion-body-padding-y: 1.5rem;
+        }
+
+        /* Переопределение для конкретного аккордеона */
+        #accordionExample {
+            --bs-accordion-bg: #f0f0f0;
+            --bs-accordion-btn-bg: #e0e0e0;
+            border-radius: 10px;
+        }
+    </style>
+
   </head>
   <body>
     {% include "includes/header.html" %}
