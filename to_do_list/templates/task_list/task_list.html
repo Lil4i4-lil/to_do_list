@@ -12,7 +12,7 @@
     </div>
     <div class="container-fluid">
       <div class="row">
-        <div class="col-12 col-md-6 col-lg-4">
+        <div class="col-12 col-md-6 col-lg-3">
           <form method="get" action="{% url 'tasks:task_list' %}" class="d-flex gap-2">
             <input type="text"
                class="form-control"
@@ -22,6 +22,56 @@
                aria-label="Поиск по тегу">
             <button type="submit" class="btn btn-dark">Поиск</button>
           </form>
+        </div>
+        <div class="col-12 col-md-6 col-lg-2">
+          <div class="accordion accordion-sm" id="accordionSort">
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingOne">
+                <button type="button" class="accordion-button collapsed py-2 bg-white" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                  <b>
+                      {% if order == 'created_at' %}
+                        По дате создания <img src="{% static 'img/up-arrow.png' %}" width="17" height="17">
+                      {% elif order == '-created_at' %}
+                        По дате создания <img src="{% static 'img/down-arrow.png' %}" width="22" height="22">
+                      {% elif order == 'title' %}
+                        По названию А-Я <img src="{% static 'img/up-arrow.png' %}" width="17" height="17">
+                      {% elif order == '-title' %}
+                        По названию Я-А <img src="{% static 'img/down-arrow.png' %}" width="22" height="22">
+                      {% else %}
+                        Отсортировать записи
+                      {% endif %}
+                  </b>
+                </button>
+              </h2>
+              <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionSort">
+                <div class="accordion-body">
+                  <form method="get" action="{% url 'tasks:task_list' %}">
+                    {% if tag %}
+                      <input type="hidden" name="tag" value="{{ tag }}">
+                    {% endif %}
+                    <div class="list-group list-group-flush fs-4">
+                      <button type="submit" name="sort" value="date_asc" class="small list-group-item list-group-item-action">
+                        По дате создания
+                        <img src="{% static 'img/up-arrow.png' %}" width="17" height="17">
+                      </button>
+                      <button type="submit" name="sort" value="date_desc" class="small list-group-item list-group-item-action">
+                        По дате создания
+                        <img src="{% static 'img/down-arrow.png' %}" width="22" height="22">
+                      </button>
+                      <button type="submit" name="sort" value="name_asc" class="small list-group-item list-group-item-action">
+                        По названию А-Я
+                        <img src="{% static 'img/up-arrow.png' %}" width="17" height="17">
+                      </button>
+                      <button type="submit" name="sort" value="name_desc" class="small list-group-item list-group-item-action">
+                        По названию Я-А
+                        <img src="{% static 'img/down-arrow.png' %}" width="22" height="22">
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div><br>
@@ -45,14 +95,16 @@
             Добавить новую заметку
           </a><br>
       </div>
-      <div class="accordion" id="accordionExample">
+
+      <div class="accordion" id="accordionCompletedTasks">
         <div class="accordion-item">
-          <h2 class="accordion-header" id="headingOne">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+          <h2 class="accordion-header" id="headingTwo">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
               Выполненные задачи пользователя
             </button>
           </h2>
-          <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+
+          <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionCompletedTasks">
             <div class="accordion-body">
               <div class="list-group list-group-flush fs-4">
                 {% for task in completed_tasks %}

@@ -18,13 +18,25 @@ class TaskListView(LoginRequiredMixin, ListView):
     model = Task
     paginate_by = 10
     tag = None
+    order = 'created_at'
     queryset = (Task.objects.all()
                 .prefetch_related('tags')
-                .select_related('author')
-                .order_by('created_at'))
+                .select_related('author'))
 
     def get_queryset(self):
         queryset = super().get_queryset().filter(completed=False)
+
+        match self.request.GET.get('sort', ''):
+            case 'date_desc':
+                self.order = '-created_at'
+            case 'name_asc':
+                self.order = 'title'
+            case 'name_desc':
+                self.order = '-title'
+            case _:
+                self.order = 'created_at'
+
+        queryset = queryset.order_by(self.order)
 
         self.tag = self.request.GET.get('tag', '')
 
@@ -37,6 +49,7 @@ class TaskListView(LoginRequiredMixin, ListView):
         context = super().get_context_data(**kwargs)
         context['completed_tasks'] = self.queryset.filter(completed=True)
         context['tag'] = getattr(self, 'tag', '')
+        context['order'] = getattr(self, 'order', '')
         return context
 
 
