@@ -1,5 +1,4 @@
 from django.urls import reverse
-
 from user_profile.forms import ProfileForm
 
 

@@ -1,10 +1,8 @@
 from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
-from django.forms.widgets import SelectDateWidget
 
 from .validators import validate_name
-
 
 BIRTH_YEAR_CHOICES = list(map(str, range(1926, 2026)))
 
@@ -17,8 +15,15 @@ class ProfileForm(forms.ModelForm):
 
     class Meta:
         model = get_user_model()
-        fields = ['username', 'email', 'phone_number', 'first_name', 'last_name', 'birthday']
-        validators = {
+        fields = (
+            'username',
+            'email',
+            'phone_number',
+            'first_name',
+            'last_name',
+            'birthday'
+        )
+        validators = { # noqa: RUF012
             'first_name': (validate_name,),
             'last_name': (validate_name,),
         }

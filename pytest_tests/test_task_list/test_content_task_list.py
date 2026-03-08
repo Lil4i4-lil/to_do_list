@@ -1,6 +1,5 @@
 from django.urls import reverse
 from pytest_cases import fixture_ref, parametrize
-
 from task_list.forms import TaskForm
 
 

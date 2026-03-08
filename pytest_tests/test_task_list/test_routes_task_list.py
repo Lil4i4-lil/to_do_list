@@ -1,5 +1,6 @@
-import pytest
 from http import HTTPStatus
+
+import pytest
 from django.urls import reverse
 from pytest_cases import fixture_ref, parametrize
 from pytest_django.asserts import assertRedirects

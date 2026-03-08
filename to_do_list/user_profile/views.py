@@ -1,11 +1,11 @@
-from django.contrib.auth import get_user_model, authenticate, login
+from django.contrib.auth import authenticate, get_user_model, login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from django.views.generic import UpdateView, CreateView
+from django.views.generic import CreateView, UpdateView
 
-from .forms import ProfileForm, CustomUserCreationForm
+from .forms import CustomUserCreationForm, ProfileForm
 
 
 class ProfileUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):

@@ -1,5 +1,5 @@
-from django.urls import reverse
 from bs4 import BeautifulSoup
+from django.urls import reverse
 from pytest_cases import fixture_ref, parametrize
 
 
@@ -17,7 +17,7 @@ def test_link_to_task_list_on_page_for_different_users(client, link_in):
     soup = BeautifulSoup(response.content, 'html.parser')
     redirection_link = soup.find('a', attrs={'name': 'redirection'})
 
-    assert (not redirection_link is None) == link_in
+    assert (redirection_link is not None) == link_in
 
 
 def test_auth_user_username_on_page(author, author_client):

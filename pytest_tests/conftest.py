@@ -1,6 +1,5 @@
 import pytest
 from django.test.client import Client
-
 from task_list.models import Task
 
 

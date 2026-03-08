@@ -1,7 +1,7 @@
-import pytest
 from http import HTTPStatus
+
+import pytest
 from django.urls import reverse
-from datetime import date
 
 
 @pytest.mark.parametrize(
@@ -11,7 +11,12 @@ from datetime import date
         ('cancel', 'Cancel', False),
     )
 )
-def test_user_can_edit_profile_info(author, author_client, profile_form_data, button, value, is_changed):
+def test_user_can_edit_profile_info(author,
+                                    author_client,
+                                    profile_form_data,
+                                    button,
+                                    value,
+                                    is_changed):
     url = reverse('user_profile:profile')
     profile_form_data[button] = value
     response = author_client.post(url, profile_form_data)
@@ -25,4 +30,7 @@ def test_user_can_edit_profile_info(author, author_client, profile_form_data, bu
     assert (author.phone_number == profile_form_data['phone_number']) == is_changed
     assert (author.first_name == profile_form_data['first_name']) == is_changed
     assert (author.last_name == profile_form_data['last_name']) == is_changed
-    # assert (date.strftime(author.birthday, '%Y-%m-%d') == profile_form_data['birthday']) == is_changed
+    # assert (
+    #         date.strftime(author.birthday, '%Y-%m-%d') ==
+    #         profile_form_data['birthday']
+    #        ) == is_changed

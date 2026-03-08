@@ -1,5 +1,6 @@
 from django import forms
-from .models import Task, Tag
+
+from .models import Tag, Task
 
 
 class TaskForm(forms.ModelForm):
@@ -14,15 +15,17 @@ class TaskForm(forms.ModelForm):
 
     class Meta:
         model = Task  # Укажите модель
-        fields = ['title', 'content', 'tags']
-        widgets = {
+        fields = ('title', 'content', 'tags')
+        widgets = { # noqa: RUF012
             'content': forms.Textarea(),
         }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         if self.instance.pk:
-            self.initial['tags'] = ', '.join([tag.tag for tag in self.instance.tags.all()])
+            self.initial['tags'] = ', '.join(
+                [tag.tag for tag in self.instance.tags.all()]
+            )
 
     def clean_title(self):
         title = self.cleaned_data['title']

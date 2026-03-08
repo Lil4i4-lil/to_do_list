@@ -1,7 +1,7 @@
-import pytest
+from http import HTTPStatus
+
 from bs4 import BeautifulSoup
 from django.urls import reverse
-from http import HTTPStatus
 from pytest_cases import fixture_ref, parametrize
 
 

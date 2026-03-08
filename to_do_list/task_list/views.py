@@ -2,10 +2,10 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 
-from .models import Task
 from .forms import TaskForm
+from .models import Task
 
 
 class TaskMixin:
@@ -74,7 +74,9 @@ class TaskUpdateView(TaskMixin, LoginRequiredMixin, UpdateView):
     template_name = "task_list/edit_task.html"
 
     def get_queryset(self):
-        queryset = Task.objects.all().prefetch_related('tags').select_related('author')
+        queryset = (Task.objects.all()
+                    .prefetch_related('tags')
+                    .select_related('author'))
         return queryset.filter(author_id=self.request.user)
 
     def post(self, request, *args, **kwargs):
@@ -101,7 +103,10 @@ class TaskDeleteView(TaskMixin, LoginRequiredMixin, DeleteView):
     template_name = "task_list/edit_task.html"
 
     def get_queryset(self):
-        queryset = Task.objects.all().prefetch_related('tags').select_related('author').order_by('created_at')
+        queryset = (Task.objects.all()
+                    .prefetch_related('tags')
+                    .select_related('author')
+                    .order_by('created_at'))
         return queryset.filter(author_id=self.request.user)
 
     def post(self, request, *args, **kwargs):
