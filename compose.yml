@@ -1,0 +1,67 @@
+services:
+  nginx:
+    image: nginx:latest
+    container_name: nginx-server
+    restart: always
+    networks:
+      - dbnet
+    expose:
+      - 8088
+    ports:
+      - "80:8088"
+    volumes:
+      - ./to_do_list/static:/app/www/to_do_list/static
+      - ./to_do_list/media:/app/www/to_do_list/media
+      - ./to_do_list/logs:/app/www/to_do_list/logs
+      - ./nginx:/etc/nginx/conf.d
+    depends_on:
+      - to_do_list
+
+  to_do_list:
+    build: ./to_do_list
+    image: to_do_list
+    container_name: to_do_list
+    restart: always
+    command: "python manage.py runserver 0.0.0.0:8000"
+    networks:
+      - dbnet
+    volumes:
+      - ./to_do_list:/app/www/to_do_list
+    ports:
+      - "8000:8000"
+    environment:
+      - DJANGO_SETTINGS_MODULE=to_do_list.settings
+      - PYTHONUNBUFFERED=1
+    depends_on:
+      - postgres
+
+  adminer:
+    image: adminer
+    container_name: adminer
+    ports:
+      - "8080:8080"
+    networks:
+      - dbnet
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:18-alpine
+    container_name: psgr
+    volumes:
+      - postgres-data:/var/lib/postgresql/18/docker
+    environment:
+      - POSTGRES_DB=to_do_list
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=qywter1423
+    networks:
+      - dbnet
+
+
+networks:
+  dbnet:
+    driver: bridge
+
+
+volumes:
+  postgres-data:
