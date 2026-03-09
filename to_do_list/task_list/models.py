@@ -7,22 +7,35 @@ class Task(models.Model):
         max_length=200,
         null=False,
         blank=False,
-        verbose_name="Задача"
+        verbose_name='Задача'
     )
     content = models.TextField(
         null=True,
         blank=True,
-        verbose_name="Пояснение к задаче"
+        verbose_name='Пояснение к задаче'
     )
     created_at = models.DateTimeField(
         auto_now_add=True,
         null=False,
         blank=False
     )
+    planned_date = models.DateField(
+        null=True,
+        blank=True,
+        default=None,
+        verbose_name='Плановая дата выполнения'
+    )
+    completion_date = models.DateField(
+        null=True,
+        blank=True,
+        default=None,
+        verbose_name='Реальная дата выполнения'
+    )
     completed = models.BooleanField(
         default=False,
         null=False,
-        blank=False
+        blank=False,
+        verbose_name='Статус выполнения'
     )
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL,

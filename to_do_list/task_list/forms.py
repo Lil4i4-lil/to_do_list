@@ -4,6 +4,12 @@ from .models import Tag, Task
 
 
 class TaskForm(forms.ModelForm):
+    planned_date = forms.DateField(
+        widget=forms.DateInput(attrs={'type': 'date'}, format='%Y-%m-%d'),
+        required=False,
+        input_formats=['%Y-%m-%d', '%d.%m.%Y', '%d/%m/%Y'],
+        label='Плановая дата выполнения'
+    )
     tags = forms.CharField(
         required=False,
         widget=forms.TextInput(attrs={
@@ -14,8 +20,8 @@ class TaskForm(forms.ModelForm):
     )
 
     class Meta:
-        model = Task  # Укажите модель
-        fields = ('title', 'content', 'tags')
+        model = Task
+        fields = ('title', 'content', 'planned_date','tags')
         widgets = { # noqa: RUF012
             'content': forms.Textarea(),
         }

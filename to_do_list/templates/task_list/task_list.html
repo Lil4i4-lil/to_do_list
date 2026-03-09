@@ -77,10 +77,17 @@
     </div><br>
     <main>
       <div class="list-group list-group-flush fs-4">
-        {% for task in page_obj %}
-          <a href="{% url 'tasks:task' task.id %}" class="list-group-item list-group-item-action">
-            {{ task }}
-          </a>
+        {% for task in tasks %}
+          {% if task.planned_date >= today %}
+            <a href="{% url 'tasks:task' task.id %}" class="list-group-item list-group-item-action">
+              {{ task }}
+            </a>
+          {% else %}
+            <a href="{% url 'tasks:task' task.id %}" class="list-group-item list-group-item-action"
+            style="color: #ff69b4; background-color: #fff0f5;">
+              {{ task }}
+            </a>
+          {% endif %}
           <p style="color: grey;">
             {% for tag in task.tags.all %}
               {{ tag }}

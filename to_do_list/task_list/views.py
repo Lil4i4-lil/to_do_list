@@ -1,3 +1,5 @@
+from datetime import date
+
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect
@@ -16,12 +18,12 @@ class TaskMixin:
 
 class TaskListView(LoginRequiredMixin, ListView):
     model = Task
-    paginate_by = 10
-    tag = None
-    order = 'created_at'
+    context_object_name = 'tasks'
     queryset = (Task.objects.all()
                 .prefetch_related('tags')
                 .select_related('author'))
+    tag = None
+    order = 'created_at'
 
     def get_queryset(self):
         queryset = super().get_queryset().filter(completed=False)
@@ -50,11 +52,13 @@ class TaskListView(LoginRequiredMixin, ListView):
         context['completed_tasks'] = self.queryset.filter(completed=True)
         context['tag'] = getattr(self, 'tag', '')
         context['order'] = getattr(self, 'order', '')
+        context['today'] = date.today()
         return context
 
 
 class TaskCreateView(TaskMixin, LoginRequiredMixin, CreateView):
     template_name = "task_list/add_task.html"
+    # Добавить ограничение: нельзя выставлять planned_date меньше текущей даты
 
     def form_valid(self, form):
         """Обработка валидной формы - добавляем автора"""
@@ -87,6 +91,7 @@ class TaskUpdateView(TaskMixin, LoginRequiredMixin, UpdateView):
             return redirect('tasks:task_list')
         elif 'complete' in request.POST:
             self.object.completed = True
+            self.object.completion_date = date.today()
             self.object.save()
             return redirect('tasks:task_list')
         elif 'save' in request.POST:

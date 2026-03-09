@@ -88,7 +88,7 @@ DATABASES = {
         'NAME': 'to_do_list',
         'USER': 'postgres',
         'PASSWORD': 'qywter1423',
-        'HOST': 'postgres', # localhost
+        'HOST': 'postgres', # 'localhost',
         'PORT': '5432',
     }
 }
