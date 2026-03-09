@@ -2,7 +2,7 @@ from to_do_list.wsgi import application
 from waitress import serve
 
 if __name__ == '__main__':
-    print("Сервер запущен на http://127.0.0.1:8000")
+    print("Сервер запущен на http://0.0.0.0:8000")
     serve(
         application,
         host='0.0.0.0',

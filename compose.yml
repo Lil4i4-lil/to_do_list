@@ -22,7 +22,7 @@ services:
     image: to_do_list
     container_name: to_do_list
     restart: always
-    command: "python manage.py runserver 0.0.0.0:8000"
+    command: "python run_waitress.py"
     networks:
       - dbnet
     volumes:
