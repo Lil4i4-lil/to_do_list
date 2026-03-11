@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
+from django.utils import timezone
 from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 
 from .forms import TaskForm
@@ -31,6 +32,10 @@ class TaskListView(LoginRequiredMixin, ListView):
         match self.request.GET.get('sort', ''):
             case 'date_desc':
                 self.order = '-created_at'
+            case 'planned_date_asc':
+                self.order = 'planned_date'
+            case 'planned_date_desc':
+                self.order = '-planned_date'
             case 'name_asc':
                 self.order = 'title'
             case 'name_desc':
@@ -49,7 +54,7 @@ class TaskListView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['completed_tasks'] = self.queryset.filter(completed=True)
+        context['completed_tasks'] = self.queryset.filter(completed=True).order_by('-completion_date')
         context['tag'] = getattr(self, 'tag', '')
         context['order'] = getattr(self, 'order', '')
         context['today'] = date.today()
@@ -62,6 +67,10 @@ class TaskCreateView(TaskMixin, LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         """Обработка валидной формы - добавляем автора"""
+        if form.instance.planned_date < timezone.now().date():
+            form.add_error('planned_date', 'Дата выполнения не может быть в прошлом')
+            return super().form_invalid(form)
+
         form.instance.author = self.request.user
         messages.success(self.request, 'Задача успешно создана!')
         return super().form_valid(form)
@@ -102,6 +111,14 @@ class TaskUpdateView(TaskMixin, LoginRequiredMixin, UpdateView):
                 return self.form_invalid(form)
 
         return redirect('tasks:task_list')
+
+    def form_valid(self, form):
+        """Обработка валидной формы - добавляем автора"""
+        if form.instance.planned_date < timezone.now().date():
+            form.add_error('planned_date', 'Дата выполнения не может быть в прошлом')
+            return super().form_invalid(form)
+
+        return super().form_valid(form)
 
 
 class TaskDeleteView(TaskMixin, LoginRequiredMixin, DeleteView):

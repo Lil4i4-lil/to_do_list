@@ -23,7 +23,7 @@
             <button type="submit" class="btn btn-dark">Поиск</button>
           </form>
         </div>
-        <div class="col-12 col-md-6 col-lg-2">
+        <div class="col-12 col-md-6 col-lg-3 position-relative">
           <div class="accordion accordion-sm" id="accordionSort">
             <div class="accordion-item">
               <h2 class="accordion-header" id="headingOne">
@@ -43,8 +43,9 @@
                   </b>
                 </button>
               </h2>
-              <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionSort">
-                <div class="accordion-body">
+              <div id="collapseOne" class="accordion-collapse collapse position-absolute top-100 start-0 w-100 z-3"
+                   aria-labelledby="headingOne" data-bs-parent="#accordionSort">
+                <div class="accordion-body bg-white border rounded-bottom shadow">
                   <form method="get" action="{% url 'tasks:task_list' %}">
                     {% if tag %}
                       <input type="hidden" name="tag" value="{{ tag }}">
@@ -56,6 +57,14 @@
                       </button>
                       <button type="submit" name="sort" value="date_desc" class="small list-group-item list-group-item-action">
                         По дате создания
+                        <img src="{% static 'img/down-arrow.png' %}" width="22" height="22">
+                      </button>
+                      <button type="submit" name="sort" value="planned_date_asc" class="small list-group-item list-group-item-action">
+                        По плановой дате
+                        <img src="{% static 'img/up-arrow.png' %}" width="17" height="17">
+                      </button>
+                      <button type="submit" name="sort" value="planned_date_desc" class="small list-group-item list-group-item-action">
+                        По плановой дате
                         <img src="{% static 'img/down-arrow.png' %}" width="22" height="22">
                       </button>
                       <button type="submit" name="sort" value="name_asc" class="small list-group-item list-group-item-action">
