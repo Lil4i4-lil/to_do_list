@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+  Календарь задач
+{% endblock %}
+
+{% block content %}
+  <div class="container mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>{{ current_date|date:"F Y" }}</h2>
+        <div>
+            <a href="{% url 'tasks_calendar:calendar' prev_month.year prev_month.month %}"
+               class="btn btn-outline-dark">← Предыдущий</a>
+            <a href="{% url 'tasks_calendar:calendar' %}"
+               class="btn btn-outline-dark mx-2">Сегодня</a>
+            <a href="{% url 'tasks_calendar:calendar' next_month.year next_month.month %}"
+               class="btn btn-outline-dark">Следующий →</a>
+        </div>
+    </div>
+
+
+    <table class="table table-bordered">
+        <thead class="table-light">
+            <tr>
+                <th>Пн</th>
+                <th>Вт</th>
+                <th>Ср</th>
+                <th>Чт</th>
+                <th>Пт</th>
+                <th>Сб</th>
+                <th>Вс</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for week in cal %}
+            <tr>
+                {% for day in week %}
+                <td class="{% if day == 0 %}bg-light{% endif %}"
+                    style="height: 100px; width: 14.28%; vertical-align: top;">
+
+                    {% if day != 0 %}
+                        <div class="d-flex justify-content-between">
+                            <strong>{{ day }}</strong>
+                            <a href="{% url 'tasks:add_task' %}?date={{ year }}-{{ month }}-{{ day }}"
+                               class="text-decoration-none" style="font-size: 25px">+</a>
+                        </div>
+
+                        <div class="mt-2">
+                          {% for task in tasks %}
+                            {% if task.date.day == day %}
+                                <div class="alert alert-{% if task.completed %}success{% else %}info{% endif %} py-1 px-2 mb-1 small">
+                                    {{ task.title|truncatechars:15 }}
+                                </div>
+                            {% endif %}
+                          {% endfor %}
+                        </div>
+                    {% endif %}
+
+                </td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

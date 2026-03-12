@@ -26,6 +26,7 @@ urlpatterns = [
     path('auth/registration/', ProfileCreateView.as_view(), name='registration'),
     path('', include('homepage.urls')),
     path('tasks/', include('task_list.urls')),
+    path('tasks_calendar/', include('tasks_calendar.urls')),
     path('profile/', include('user_profile.urls')),
 ]
 

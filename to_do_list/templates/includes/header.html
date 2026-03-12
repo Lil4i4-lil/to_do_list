@@ -4,23 +4,29 @@
     <div class="container-fluid">
       <div class="row align-items-center">
 
-        <div class="col-xxl-1 col-xl-2">
-          <a href="{% url 'homepage:index' %}" class="btn btn-outline-dark btn-lg">Главная</a>
+        <div class="col-auto">
+          <a href="{% url 'homepage:index' %}" class="btn btn-light btn-lg" style="background-color: #dfe0e0; border: 0px">Главная</a>
         </div>
 
-        <div class="col-xxl-10 col-xl-9">
-          <a href="{% url 'tasks:task_list' %}" class="btn btn-outline-dark btn-lg">Мои задачи</a>
+        <div class="col-auto">
+          <a href="{% url 'tasks:task_list' %}" class="btn btn-light btn-lg" style="background-color: #dfe0e0; border: 0px">Мои задачи</a>
         </div>
+
+        <div class="col-auto">
+          <a href="{% url 'tasks_calendar:calendar' %}" class="btn btn-light btn-lg" style="background-color: #dfe0e0; border: 0px">Календарь задач</a>
+        </div>
+
+        <div class="col"></div>
 
         {% if user.is_authenticated %}
-          <div class="col-xxl-1 col-xl-1">
+          <div class="col-auto">
             <a href="{% url 'user_profile:profile' %}" class="btn btn_light">
               <img src="{% static 'img/user.png' %}" width="50" height="50" title="Профиль">
             </a>
           </div>
 
         {% else %}
-          <div class="col-xxl-1 col-xl-1">
+          <div class="col-auto">
             <a href="{% url 'login' %}" class="btn btn_light">
               <img src="{% static 'img/user.png' %}" width="50" height="50" title="Войти в профиль">
             </a>

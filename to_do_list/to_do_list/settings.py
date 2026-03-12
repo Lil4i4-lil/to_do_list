@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'homepage.apps.HomepageConfig',
     'task_list.apps.TaskListConfig',
+    'tasks_calendar.apps.TasksCalendarConfig',
     'user_profile.apps.UserProfileConfig',
     'core.apps.CoreConfig',
 ]
