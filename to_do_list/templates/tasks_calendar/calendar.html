@@ -14,12 +14,11 @@
             <a href="{% url 'tasks_calendar:calendar' prev_month.year prev_month.month %}"
                class="btn btn-outline-dark">← Предыдущий</a>
             <a href="{% url 'tasks_calendar:calendar' %}"
-               class="btn btn-outline-dark mx-2">Сегодня</a>
+               class="btn btn-outline-dark mx-2">Текущий</a>
             <a href="{% url 'tasks_calendar:calendar' next_month.year next_month.month %}"
                class="btn btn-outline-dark">Следующий →</a>
         </div>
     </div>
-
 
     <table class="table table-bordered">
         <thead class="table-light">
@@ -37,25 +36,46 @@
             {% for week in cal %}
             <tr>
                 {% for day in week %}
-                <td class="{% if day == 0 %}bg-light{% endif %}"
+                <td class="{% if day == 0 %}bg-light{% else %}calendar-cell{% endif %}"
                     style="height: 100px; width: 14.28%; vertical-align: top;">
 
                     {% if day != 0 %}
-                        <div class="d-flex justify-content-between">
-                            <strong>{{ day }}</strong>
-                            <a href="{% url 'tasks:add_task' %}?date={{ year }}-{{ month }}-{{ day }}"
-                               class="text-decoration-none" style="font-size: 25px">+</a>
-                        </div>
+                      <div style="position: relative; height: 100%;">
 
-                        <div class="mt-2">
-                          {% for task in tasks %}
-                            {% if task.date.day == day %}
-                                <div class="alert alert-{% if task.completed %}success{% else %}info{% endif %} py-1 px-2 mb-1 small">
-                                    {{ task.title|truncatechars:15 }}
-                                </div>
-                            {% endif %}
-                          {% endfor %}
-                        </div>
+                          <a href="{% url 'tasks_calendar:daily_tasks' year month day %}"
+                             class="stretched-link text-decoration-none text-dark">
+                              <strong>{{ day }}</strong>
+                          </a>
+                          <div class="position-absolute top-0 end-0" style="z-index: 10; margin-top: 2px; margin-right: 2px;">
+                            <a href="{% url 'tasks:add_task' %}?date={{ year }}-{{ month|stringformat:'02d' }}-{{ day|stringformat:'02d' }}"
+                                class="btn btn-sm btn-outline-primary rounded-circle d-flex align-items-center justify-content-center p-0"
+                                style="width: 28px; height: 28px; font-size: 1.2rem; line-height: 1;">
+                                <span style="margin-top: -2px;">+</span>
+                            </a>
+                          </div>
+                          <div class="mt-4">
+                            {% for task in tasks %}
+                              {% if task.planned_date.day == day %}
+                              <!-- Используем разные классы Bootstrap для разных статусов -->
+                              <div class="alert
+                                  {% if task.completed %}
+                                      alert-success
+                                  {% elif task.is_overdue %}
+                                      alert-danger
+                                  {% else %}
+                                      alert-info
+                                  {% endif %}
+                                  py-1 px-2 mb-1 small">
+                                  {{ task.title|truncatechars:15 }}
+                                  {% if task.completed %}
+                                      ✓
+                                  {% elif task.is_overdue %}
+                                      ⚠️
+                                  {% endif %}
+                              </div>
+                              {% endif %}
+                            {% endfor %}
+                          </div>
                     {% endif %}
 
                 </td>
@@ -65,4 +85,35 @@
         </tbody>
     </table>
 </div>
+
+<style>
+    .calendar-cell {
+        cursor: pointer;
+        transition: background-color 0.2s;
+        padding: 5px;
+    }
+    .calendar-cell:hover {
+        background-color: #f8f9fa;
+    }
+    .stretched-link {
+        display: block;
+        padding: 5px;
+    }
+    .stretched-link strong {
+        position: relative;
+        z-index: 5;
+    }
+    .btn-outline-primary.rounded-circle {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .alert {
+        margin-bottom: 2px;
+        pointer-events: auto;
+    }
+    .alert:hover {
+        opacity: 0.9;
+    }
+</style>
 {% endblock %}

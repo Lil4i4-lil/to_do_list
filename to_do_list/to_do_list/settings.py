@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/6.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
-import os
+from datetime import timedelta
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -155,3 +155,5 @@ INTERNAL_IPS = [
 ]
 
 AUTH_USER_MODEL = 'user_profile.UserProfile'
+
+#tg bot token: 8634603439:AAFCXvjAl9D9wwknCjb1DW2CRHaCEKY-c3I

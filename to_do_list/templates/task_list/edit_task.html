@@ -5,12 +5,13 @@
 {% block header_title %}Ваша заметка{% endblock %}
 
 {% block form_info %}
-  action="{% url 'tasks:task' task.id %}" method="post"
+  action="{% url 'tasks:task' task.id %}?next={{ next }}" method="post"
 {% endblock %}
 
 {% block form_footer %}
   <div class="d-flex justify-content-between mt-3">
     <div>
+      <input type="hidden" name="next" value="{{ next }}">
       <input type="submit" name="cancel" class="btn btn-outline-dark btn-lg" value="К списку задач">
       <input type="submit" name="save" class="btn btn-outline-dark btn-lg" value="Сохранить изменения">
       <input type="submit" name="complete" class="btn btn-outline-dark btn-lg" value="Выполнить задачу">
@@ -36,7 +37,7 @@
                 <h3>Вы уверены что хотите удалить данную заметку?</h3>
             </div>
             <div class="modal-footer">
-                <form action="{% url 'tasks:confirm_delete' task.id %}" method="post" style="display: inline;">
+                <form action="{% url 'tasks:confirm_delete' task.id %}?next={{ next }}" method="post" style="display: inline;">
                     {% csrf_token %}
                     <button type="submit" name="confirm-delete" class="btn btn-dark btn-lg">Удалить</button>
                 </form>

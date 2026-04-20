@@ -2,13 +2,26 @@
 {% load static %}
 
 {% block title %}
-  Список задач
+  {% if selected_date %}
+    Задачи на {{ date_title }}
+  {% else %}
+    Мои задачи
+  {% endif %}
 {% endblock %}
 
 {% block content %}
   <div class="container-fluid">
-    <div class="row">
-      <h1><strong>Список задач пользователя</strong></h1>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2>
+                {% if selected_date %}
+                    <br>
+                    Задачи на {{ date_title }}
+                {% else %}
+                    Все задачи
+                {% endif %}
+            </h2>
+        </div>
     </div>
     <div class="container-fluid">
       <div class="row">
@@ -88,11 +101,11 @@
       <div class="list-group list-group-flush fs-4">
         {% for task in tasks %}
           {% if task.planned_date >= today %}
-            <a href="{% url 'tasks:task' task.id %}" class="list-group-item list-group-item-action">
+            <a href="{% url 'tasks:task' task.id %}?next={{ request.get_full_path }}" class="list-group-item list-group-item-action">
               {{ task }}
             </a>
           {% else %}
-            <a href="{% url 'tasks:task' task.id %}" class="list-group-item list-group-item-action"
+            <a href="{% url 'tasks:task' task.id %}?next={{ request.get_full_path }}" class="list-group-item list-group-item-action"
             style="color: #ff69b4; background-color: #fff0f5;">
               {{ task }}
             </a>
@@ -106,7 +119,7 @@
             {% endfor %}
           </p>
         {% endfor %}
-          <a href="{% url 'tasks:add_task' %}" class="list-group-item list-group-item-action">
+          <a href="{% url 'tasks:add_task' %}?date={{ selected_date|date:'Y-m-d' }}" class="list-group-item list-group-item-action">
             <img src="{% static 'img/plus.png' %}" width="25" height="25">
             Добавить новую заметку
           </a><br>
@@ -124,7 +137,7 @@
             <div class="accordion-body">
               <div class="list-group list-group-flush fs-4">
                 {% for task in completed_tasks %}
-                  <a href="{% url 'tasks:task' task.id %}" class="list-group-item list-group-item-action">
+                  <a href="{% url 'tasks:task' task.id %}?next={{ request.get_full_path }}" class="list-group-item list-group-item-action">
                     {{ task }}
                   </a>
                   <p style="color: grey;">

@@ -7,10 +7,19 @@ class UserProfile(AbstractUser):
         max_length=12,
         null=True,
         blank=True,
-        verbose_name="Номер телефона"
+        verbose_name='Номер телефона'
     )
     birthday = models.DateField(
         null=True,
         blank=True,
-        verbose_name="День рождения"
+        verbose_name='День рождения'
+    )
+    tg = models.CharField(
+        null=True,
+        blank=True,
+        verbose_name='Имя пользователя в Telegram'
+    )
+    tg_notifications = models.BooleanField(
+        null=False,
+        default=False
     )

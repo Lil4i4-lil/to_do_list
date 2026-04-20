@@ -1,11 +1,15 @@
 import calendar
 from datetime import date, datetime, timedelta
-from django.shortcuts import render
+
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
 from django.utils import timezone
+from django.urls import reverse
 
 from task_list.models import Task
 
 
+@login_required
 def calendar_view(request, year=None, month=None):
     if not year:
         year = timezone.now().year
@@ -14,32 +18,42 @@ def calendar_view(request, year=None, month=None):
 
     tasks = Task.objects.filter(
         author_id=request.user,
-        created_at__year=year,
-        created_at__month=month
+        planned_date__year=year,
+        planned_date__month=month
     )
 
-    tasks_by_day = {}
+    today = date.today()
     for task in tasks:
-        day = task.created_at.day
-        if day not in tasks_by_day:
-            tasks_by_day[day] = []
-        tasks_by_day[day].append(task)
+        task.is_overdue = (not task.completed and
+                           task.planned_date and
+                           task.planned_date < today)
 
     cal = calendar.monthcalendar(year, month)
-    month_name = calendar.month_name[month]
-    prev_month = datetime(year, month, 1) - timedelta(days=1)
-    next_month = datetime(year, month, 28) + timedelta(days=4)
-    current_date = datetime(year, month, 1)
+
+    # Вычисляем предыдущий и следующий месяц для навигации
+    first_day_of_month = datetime(year, month, 1)
+    prev_month = first_day_of_month - timedelta(days=1)
+    next_month = first_day_of_month + timedelta(days=32)
 
     context = {
         'cal': cal,
-        'tasks_by_day': tasks_by_day,
-        'month_name': month_name,
+        'tasks': tasks,  # Передаем все задачи напрямую
+        'month': month,
         'year': year,
         'prev_month': prev_month,
         'next_month': next_month,
-        'today': date.today(),
-        'current_date': current_date,
+        'current_date': first_day_of_month,
     }
 
     return render(request, 'tasks_calendar/calendar.html', context)
+
+
+@login_required
+def daily_tasks_redirect(request, year, month, day):
+    """Редирект на страницу списка задач с фильтром по дате"""
+    selected_date = f"{year}-{month:02d}-{day:02d}"
+
+    print(f"Перенаправление на дату: {selected_date}")
+    print(f"URL: {reverse('tasks:task_list')}?date={selected_date}")
+
+    return redirect(f"{reverse('tasks:task_list')}?date={selected_date}")

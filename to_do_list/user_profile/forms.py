@@ -21,7 +21,9 @@ class ProfileForm(forms.ModelForm):
             'phone_number',
             'first_name',
             'last_name',
-            'birthday'
+            'birthday',
+            'tg',
+            'tg_notifications'
         )
         validators = { # noqa: RUF012
             'first_name': (validate_name,),
@@ -48,5 +50,5 @@ class ProfileForm(forms.ModelForm):
 
 class CustomUserCreationForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
-        model = get_user_model()  # Ваша кастомная модель
+        model = get_user_model()
         fields = ('username', 'email')
